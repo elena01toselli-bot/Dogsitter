@@ -1,0 +1,87 @@
+<!-- src/app/features/home-cliente/recensioni/add-recensione/add-recensione.html -->
+<div class="page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <button class="btn-back" (click)="annulla()">← Indietro</button>
+    <h1 class="page-title">{{ titoloPagina() }}</h1>
+  </div>
+
+  <div class="form-card">
+
+    <!-- ── A chi (dogsitter) ──────────────────────────────────── -->
+    <div class="campo">
+      <label class="campo__label">A:</label>
+
+      @if (!isModifica()) {
+        <select
+          class="campo__select"
+          [value]="usernameDogsitter()"
+          (change)="onDogsitterChange($event)"
+        >
+          <option value="" disabled selected>Seleziona un dogsitter…</option>
+          @for (d of svc.dogsitterDisponibili; track d) {
+            <option [value]="d">{{ d }}</option>
+          }
+        </select>
+      }
+
+      @if (isModifica()) {
+        <div class="campo__dest-readonly">
+          <div class="dest-avatar">
+            {{ usernameDogsitter().slice(0, 2).toUpperCase() }}
+          </div>
+          <div class="dest-info">
+            <span class="dest-nome">{{ usernameDogsitter() }}</span>
+            <span class="dest-tipo">🐶 Dogsitter</span>
+          </div>
+          <span class="dest-lock" title="Non modificabile">🔒</span>
+        </div>
+      }
+    </div>
+
+    <!-- ── Voto ──────────────────────────────────────────────── -->
+    <div class="campo">
+      <label class="campo__label">Voto (da 1 a 5)</label>
+      <div class="stelle-wrap">
+        @for (s of range5; track s) {
+          <button
+            class="stella-btn"
+            [class.stella-btn--on]="s <= voto()"
+            (click)="setVoto(s)"
+            [attr.aria-label]="'Voto ' + s"
+          >★</button>
+        }
+        @if (voto() > 0) {
+          <span class="voto-label">{{ voto() }} / 5</span>
+        }
+      </div>
+    </div>
+
+    <!-- ── Commento ───────────────────────────────────────────── -->
+    <div class="campo">
+      <label class="campo__label">Commento</label>
+      <textarea
+        class="campo__textarea"
+        placeholder="Scrivi la tua esperienza…"
+        rows="5"
+        [ngModel]="commento()"
+        (ngModelChange)="commento.set($event)"
+      ></textarea>
+    </div>
+
+    <!-- ── Azioni ─────────────────────────────────────────────── -->
+    <div class="form-azioni">
+      <button class="btn-annulla" (click)="annulla()">Annulla</button>
+      <button
+        class="btn-conferma"
+        [disabled]="!formValido()"
+        (click)="conferma()"
+      >
+        Conferma
+      </button>
+    </div>
+
+  </div>
+
+</div>

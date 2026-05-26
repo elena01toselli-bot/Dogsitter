@@ -1,0 +1,73 @@
+<!-- src/app/features/home-cliente/recensioni/recensioni.html -->
+<div class="page">
+
+  <!-- Header -->
+  <div class="page-header">
+    <div class="page-header__left">
+      <span class="page-icon">🐾</span>
+      <h1 class="page-title">Le mie recensioni</h1>
+    </div>
+    <button class="btn-aggiungi" (click)="vaiAggiungi()">+ Aggiungi</button>
+  </div>
+
+  <!-- Caricamento -->
+  @if (caricamento()) {
+    <div class="stato-msg">
+      <span class="spinner"></span> Caricamento…
+    </div>
+  }
+
+  <!-- Errore -->
+  @if (errore()) {
+    <div class="stato-errore">⚠️ {{ errore() }}</div>
+  }
+
+  <!-- Lista vuota -->
+  @if (!caricamento() && !errore() && recensioni().length === 0) {
+    <div class="lista-vuota">
+      <span class="lista-vuota__icon">📝</span>
+      <p>Non hai ancora scritto nessuna recensione.</p>
+      <button class="btn-aggiungi" (click)="vaiAggiungi()">Scrivi la prima</button>
+    </div>
+  }
+
+  <!-- Lista recensioni -->
+  @if (!caricamento() && recensioni().length > 0) {
+    <div class="lista">
+      @for (r of recensioni(); track r.usernameDogsitter) {
+        <div class="rec-row">
+
+          <div class="rec-row__body">
+            <div class="rec-row__top">
+              <div class="rec-avatar">
+                {{ r.usernameDogsitter.slice(0, 2).toUpperCase() }}
+              </div>
+              <div class="rec-row__meta">
+                <span class="rec-nome">{{ r.usernameDogsitter }}</span>
+                <span class="rec-tipo">Dogsitter</span>
+              </div>
+              <div class="rec-stelle">
+                @for (s of range5; track s) {
+                  <span [class]="s <= r.voto ? 'stella stella--on' : 'stella'">★</span>
+                }
+              </div>
+              <span class="rec-data">{{ r.data }}</span>
+            </div>
+            <p class="rec-commento">{{ r.commento }}</p>
+          </div>
+
+          <div class="rec-row__azioni">
+            <button class="btn-mod" (click)="vaiModifica(r)">✏️ Mod.</button>
+            <button class="btn-del" (click)="elimina(r.usernameDogsitter)">🗑️</button>
+          </div>
+
+        </div>
+      }
+    </div>
+
+    <div class="footer-azioni">
+      <button class="btn-cancella-tutto" (click)="cancellaTutto()">Cancella tutto</button>
+    </div>
+  }
+
+</div>
