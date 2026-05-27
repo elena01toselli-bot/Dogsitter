@@ -1,0 +1,51 @@
+<div class="sezione-specifica-sitter">
+  
+  <div class="campo-form-specifico">
+    <label>Capacità ospitalità massima (Numero di cani in contemporanea)</label>
+    <input type="number" [(ngModel)]="dogsitter.maxCani" class="input-numerico" title="Quanti cani puoi gestire al massimo?" />
+  </div>
+
+  <div class="blocco-sotto-sezione">
+    <div class="header-flessibile">
+      <h2 class="sezione-titolo-specifico">🐕 Catalogo Servizi Erogati</h2>
+      <button type="button" class="btn-azione-navigazione" (click)="vaiAFormServizio()">➕ Aggiungi Servizio</button>
+    </div>
+    <p class="sottotitolo-info">Puoi offrire la stessa categoria di servizio con durate differenti.</p>
+    
+    
+    <ul *ngIf="serviziOfferti.length > 0; else noServizi" class="lista-servizi-attivi">
+      <li *ngFor="let servizio of serviziOfferti">
+        <div class="info-servizio">
+          <span class="servizio-nome">🎯 {{ servizio.categoria }}</span>
+          <span class="servizio-durata">⏱️ {{ servizio.durata }} min</span>
+          <span class="servizio-prezzo">💰 {{ servizio.prezzoListino }} €</span>
+        </div>
+        <div class="azioni-servizio">
+          <button type="button" class="btn-modifica-servizio" (click)="vaiAFormServizio(servizio)">✏️ Modifica</button>
+          <button type="button" class="btn-rimuovi-servizio" (click)="rimuoviServizio(servizio)">❌ Disattiva</button>
+        </div>
+      </li>
+    </ul>
+    <ng-template #noServizi>
+      <p class="lista-vuota">Nessun servizio configurato. Usa il tasto in alto per attivarne uno.</p>
+    </ng-template>
+  </div>
+
+  <div class="blocco-sotto-sezione">
+    <h2 class="sezione-titolo-specifico">⭐ Valutazioni e Recensioni</h2>
+    <div *ngIf="recensioni.length > 0; else noRecensioni" class="lista-recensioni">
+      <div *ngFor="let rec of recensioni" class="recensione-item">
+        <div class="rec-header">
+          <span class="rec-autore">👤 Cliente: {{ rec.usernameCliente }}</span>
+          <span class="rec-voto">{{ '⭐'.repeat(rec.voto) }}</span>
+        </div>
+        <p class="rec-commento">"{{ rec.commento }}"</p>
+        <span class="rec-data">Inviata il: {{ rec.data }}</span>
+      </div>
+    </div>
+    <ng-template #noRecensioni>
+      <p class="lista-vuota">Nessun feedback presente per questo profilo.</p>
+    </ng-template>
+  </div>
+
+</div>

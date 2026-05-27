@@ -1,0 +1,41 @@
+<div class="form-page-container">
+  <div class="form-card">
+    <h2>{{ inModifica ? '✏️ Modifica Dati Cane' : '🐾 Registra Nuovo Cane' }}</h2>
+    
+    <form (ngSubmit)="salva()">
+      <div class="campo-form">
+        <label>Nome Cane</label>
+        <input type="text" [(ngModel)]="cane.nome" name="nome" placeholder="Es. Thor" required>
+      </div>
+
+      <div class="campo-form">
+        <label>Razza</label>
+        <input type="text" [(ngModel)]="cane.razza" name="razza" placeholder="Es. Golden Retriever">
+      </div>
+
+      <div class="campo-form">
+        <label>Numero Microchip (15 cifre)</label>
+        <input type="text" [(ngModel)]="cane.nMicrochip" name="nMicrochip" placeholder="Inserisci microchip" [disabled]="inModifica" required>
+      </div>
+
+      <div class="campo-form">
+        <label>Taglia</label>
+        <select [(ngModel)]="cane.taglia" name="taglia">
+          <option value="Piccola">Piccola</option>
+          <option value="Media">Media</option>
+          <option value="Grande">Grande</option>
+        </select>
+      </div>
+
+      <div class="campo-form">
+        <label>Note sul Comportamento</label>
+        <textarea [(ngModel)]="cane.noteComportamento" name="noteComportamento" rows="3" placeholder="Es. Socievole con altri cani, ha paura dei tuoni..."></textarea>
+      </div>
+
+      <div class="gruppo-pulsanti">
+        <button type="submit" class="btn-conferma">Conferma</button>
+        <button type="button" class="btn-annulla" (click)="annulla()">Annulla</button>
+      </div>
+    </form>
+  </div>
+</div>
