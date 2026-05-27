@@ -1,0 +1,69 @@
+<div class="modifica-container" *ngIf="prenotazione; else caricamento">
+  
+  <div class="header-modifica">
+    <button class="btn-indietro" (click)="tornaIndietro()">← Indietro</button>
+    <h2>Modifica Prenotazione #{{ prenotazione.codiceId }} codiceID</h2>
+  </div>
+
+  <form class="form-card" (ngSubmit)="salva()">
+    <div class="form-group">
+      <label>Categoria Servizio</label>
+      <input type="text" [value]="prenotazione.categoriaServizio" disabled class="input-disabled">
+    </div>
+
+    <!-- Scelta Cane (solo per cliente e non per lezioni in campo) -->
+    <div class="form-group" *ngIf="ruolo === 'cliente'">
+      <label>Cane</label>
+      <!--Questo è un Event Binding.
+        Ogni volta che il valore selezionato cambia, Angular esegue il metodo onCaneChange()
+        che si trova nel file TypeScript.
+        $event contiene il nuovo valore selezionato (in questo caso, il nome del cane).
+        Questo permette di eseguire logica aggiuntiva, 
+        come recuperare il numero di microchip del nuovo cane scelto.-->
+      <select name="cane" [(ngModel)]="prenotazione.nomeCane" (ngModelChange)="onCaneChange($event)" 
+              [disabled]="isLezioneCampo"
+              [ngClass]="{'input-attivo': !isLezioneCampo, 'input-disabled': isLezioneCampo}">
+              <!--Aggiunge la classe CSS 'input-attivo' se !isLezioneCampo è true (cioè, se non è una lezione).
+              Aggiunge la classe CSS 'input-disabled' se isLezioneCampo è true.
+              Serve a cambiare lo stile del menu (es. colore del bordo, sfondo) a seconda che sia attivo o disabilitato. -->
+                      
+              <option *ngFor="let cane of caniDelCliente" [value]="cane.nome">{{ cane.nome }}</option>
+      </select>
+    </div>
+    <div class="form-group" *ngIf="ruolo === 'dogsitter'">
+        <label>Cane</label>
+        <input type="text" [value]="prenotazione.nomeCane" disabled class="input-disabled">
+    </div>
+
+    <!-- Data e Ora (modificabili dal dogsitter) -->
+    <div class="form-row">
+      <div class="form-group">
+        <label>Data</label>
+        <input type="date" name="data" [(ngModel)]="prenotazione.dataSvolgimento" 
+               [disabled]="ruolo === 'cliente'"
+               [ngClass]="{'input-attivo': ruolo === 'dogsitter', 'input-disabled': ruolo === 'cliente'}" required>
+      </div>
+      <div class="form-group">
+        <label>Ora</label>
+        <input type="time" name="ora" [(ngModel)]="prenotazione.oraSvolgimento" 
+               [disabled]="ruolo === 'cliente'"
+               [ngClass]="{'input-attivo': ruolo === 'dogsitter', 'input-disabled': ruolo === 'cliente'}" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Prezzo Pattuito (€)</label>
+        <input type="number" [value]="prenotazione.prezzoPattuito" disabled class="input-disabled">
+    </div>
+    <div class="form-actions">
+      <button type="button" class="btn-annulla" (click)="tornaIndietro()">Annulla</button>
+      <button type="submit" class="btn-salva">Salva Modifiche</button>
+    </div>
+  </form>
+</div>
+
+<ng-template #caricamento>
+  <div class="caricamento">
+    <p>Caricamento dati prenotazione...</p>
+  </div>
+</ng-template>

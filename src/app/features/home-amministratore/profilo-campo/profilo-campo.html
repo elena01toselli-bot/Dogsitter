@@ -1,0 +1,124 @@
+
+<!--Finché la variabile campo è null, mostra il template #caricamento, appena si riempie mostra la pagina-->
+<div class="profilo-container" *ngIf="campo; else caricamento">
+  
+  <div class="header-profilo">
+    <button class="btn-indietro" (click)="tornaIndietro()">← Torna alla lista</button>
+    <h2>Profilo: {{ campo.nome }}</h2>
+  </div>
+
+  <!-- SEZIONE INFO CAMPO -->
+  <section class="info-section card">
+    <h3>Informazioni Generali</h3>
+    <div class="info-grid">
+      <div class="info-item">
+        <strong>Indirizzo:</strong>
+        <p>{{ campo.via }} {{ campo.nCivico }}, {{ campo.cap }} ({{ campo.provincia }})</p>
+      </div>
+      <div class="info-item">
+        <strong>Contatti:</strong>
+        <p>{{ campo.nTel }}</p>
+      </div>
+      <div class="info-item">
+        <strong>Orari:</strong>
+        <p>{{ campo.orarioApertura }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEZIONE LEZIONI -->
+  <section class="lezioni-section card">
+    <h3>Lezioni Offerte</h3>
+
+    <div *ngIf="caricamentoLezioni" class="caricamento-inline">
+      <p>⏳ Caricamento lezioni in corso...</p>
+    </div>
+
+    <ng-container *ngIf="!caricamentoLezioni">
+      
+      <!-- Tabella Lezioni -->
+      <div class="table-container" *ngIf="lezioniDelCampo.length > 0; else noLezioni">
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Ora</th>
+              <th>Tipologia</th>
+              <th>Costo</th>
+              <th>Max Partecipanti</th>
+              <th>Azioni</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!--ciclo sulle lezioni del campo e salvo l'indice di ogni elemento in i
+            Quando Angular esegue un ciclo *ngFor per scorrere un array, dietro le quinte 
+            tiene il conto di a che punto è arrivato. Questo "contatore" nascosto si chiama proprio index e parte da 0-->
+            <tr *ngFor="let l of lezioniDelCampo; let i = index">
+              <td>{{ l.data }}</td>
+              <td>{{ l.ora }}</td>
+              <td>{{ l.tipologia }}</td>
+              <td>{{ l.costo }}€</td>
+              <td>{{ l.maxPartecipanti }}</td>
+              <td>
+                <button class="btn-modifica" (click)="modificaLezione(l, i)">Modifica</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <ng-template #noLezioni>
+        <p class="messaggio-vuoto">Nessuna lezione registrata per questo campo.</p>
+      </ng-template>
+
+    </ng-container>
+  </section>
+
+  <!-- FORM DI MODIFICA LEZIONE (Compare solo se c'è una lezione selezionata) -->
+  <section class="form-modifica card" *ngIf="lezioneInModifica">
+    <h3>Modifica Lezione</h3>
+    
+    <form (ngSubmit)="salvaLezione()">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Data</label>
+          <input type="date" name="data" [(ngModel)]="lezioneInModifica.data" required>
+        </div>
+        <div class="form-group">
+          <label>Ora</label>
+          <input type="time" name="ora" [(ngModel)]="lezioneInModifica.ora" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tipologia</label>
+          <input type="text" name="tipologia" [(ngModel)]="lezioneInModifica.tipologia" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Costo (€)</label>
+          <input type="number" name="costo" [(ngModel)]="lezioneInModifica.costo" required>
+        </div>
+        <div class="form-group">
+          <label>Max Partecipanti</label>
+          <input type="number" name="maxPartecipanti" [(ngModel)]="lezioneInModifica.maxPartecipanti" required>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-annulla" (click)="annullaModifica()">Annulla</button>
+        <button type="submit" class="btn-salva">Salva Modifiche</button>
+      </div>
+    </form>
+  </section>
+
+</div>
+
+<ng-template #caricamento>
+  <div class="caricamento">
+    <p>Caricamento dati del campo in corso...</p>
+  </div>
+</ng-template>

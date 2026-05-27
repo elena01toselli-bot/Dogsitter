@@ -1,0 +1,144 @@
+/* ── Colori principali ripresi dalla pagina di login ── */
+/* Verde scuro:  #3a5f45  (usato per titoli e bordi)    */
+/* Verde chiaro: #c8e6c0  (usato per sfondi leggeri)    */
+/* Bianco:       #ffffff  (sfondo pagina e card)         */
+
+/* sintassi generale: tag { proprietà: valore; } prende tutti quei tag
+  , .class per le classi , .classi tag per il tag dentro la classe */
+
+/* ── Contenitore principale della pagina ── */
+.scelta-ruolo {
+
+  background-color: #f9fdfb; /* sfondo verde molto chiaro */
+
+  /*stiamo dicendo che questo è un flex container (contenitore flex)
+  quindi i suoi figli diventano flex items */
+  display: flex;
+
+  /*decidiamo qual'è l'asse che i figli seguono o row (default) quindi uno dopo l'altro in orizzontale con column uno sotto l'altro*/
+  flex-direction: column;
+
+  align-items: center; /* centra i figli (flex items) al centro rispetto all'asse opposto deciso sopra */
+
+  padding: 60px 24px; /* spazio tra contenuto e bordo: 60px sopra/sotto, 24px destra/sinistra */
+
+  font-family: Arial, sans-serif; /*Arial è il font prestabilito; qualsiasi font sans-serif disponibile sul dispositivo utente */
+}
+
+/* ── Titolo principale ── */
+.titolo {
+
+  /*rem: font-size del tag html (se non lo modifichi 16)*2 in questo caso */
+  font-size: 2rem;
+  color: #1a3c34;
+  /* verde scuro del login */
+  text-transform: uppercase; /* trasforma tutto il testo in maiuscolo */
+  letter-spacing: 2px; /* aumenta lo spazio tra le lettere per un effetto più elegante */
+  margin-bottom: 8px; /* margine bottom(sotto) il titolo per separarlo dal sottotitolo */
+  text-align: center;
+}
+
+/* ── Sottotitolo ── */
+.sottotitolo {
+
+  /*rem: font-size del tag html (se non lo modifichi 16)*1 in questo caso */
+  font-size: 1rem;
+
+  color: #2c6950;
+  /* verde medio */
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+/* ── Riga che contiene le due card ── */
+.cards-container {
+
+  /* cosi cards-container è un flex container e i suoi figli diventano flex items */
+  display: flex;
+
+  /*mette 24px di spazio tra ogni coppia di card adiacenti (non prima della prima né dopo l'ultima card)*/
+  gap: 24px;
+
+  /* fa si che le card siano centrate orizzontalmente (perchè flex-direction: row se non specificato) dentro il container */
+  justify-content: center;
+}
+
+/* ── Singola card ── */
+.card {
+
+  /* sfondo bianco per contrasto con il verde chiaro del background */
+  background-color: #ffffff;
+
+  /* bordo verde chiaro visibile (solid) */
+  border: 2px solid #add8a1;
+
+  /* angoli arrotondati, più basso meno arrotondati */
+  border-radius: 16px;
+
+  width: 220px; /* larghezza del contenuto si applica solo al contenuto come height */
+  padding: 32px 20px; /* spazio interno tra contenuto e bordo: 32px sopra/sotto, 20px destra/sinistra */
+  text-align: center; /* centra il testo dentro la card, questa viene poi ereditata da h2 e p */
+
+  /* mostra la manina (perchè l'attributo cursor ha valore pointer) al passaggio sulla card */
+  cursor: pointer;
+
+  /* animazione hover */
+  /*fa si che quando si passa il mouse sopra la card, ossia
+  quando transform o box-shadow cambiano valore su questa card, non farlo di scatto — animali in 0.2 secondi*/
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* ── Effetto al passaggio del mouse ── */
+/*I due punti : introducono una pseudo-classe. Le pseudo-classi non indicano un elemento fisico,
+ ma lo stato in cui si trova quell'elemento in un preciso millisecondo (qui mouse sopra)*/
+.card:hover {
+
+  /* trasform è una proprietà che permette di gestire gli spostamenti della card di 6px verso l'alto
+  in questo caso fatto con translateY (con numeri negativi andiamo verso l'alto)*/
+  transform: translateY(-6px);
+
+  /* si alza leggermente */
+  /* box-shadow è una proprietà che permette di
+  creare un'ombra sotto la card, con i valori 0 8px 24px rgba(58, 95, 69, 0.2)
+  , 0 per lo spostamento orizzontale, 8px per lo spostamento verticale e 24px raggio sfocatura,
+   dentro rgba per il colore verde scuro */
+  box-shadow: 0 8px 24px rgba(58, 95, 69, 0.2);
+
+  /* bordo diventa verde scuro quando si passa il mouse sopra */
+  border-color: #365e42;
+}
+
+/* ── Icona emoji grande ── */
+.icona {
+
+  /*rem: font-size del tag html (se non lo modifichi 16)*3 in questo caso */
+  font-size: 3rem;
+
+  /* <span> è inline per default — vive nella riga di testo senza andare a capo. Con display:
+  block diventa un elemento di blocco,
+   occupa tutta la larghezza e va a capo prima e dopo, permettendo al margin-bottom di funzionare correttamente. */
+  display: block;
+
+  /* margine sotto l'icona per separarla dal nome della card */
+  margin-bottom: 16px;
+}
+
+/* ── Titolo dentro la card ── */
+.card h2 {
+
+  /*rem: font-size del tag html (se non lo modifichi 16)*1.1 in questo caso */
+  font-size: 1.1rem;
+  color: #1a3c34;
+  text-transform: uppercase;
+  margin: 0 0 12px 0; /* sopra, destra, sotto, sinistra (senso orario partendo dall'alto) */
+}
+
+/* ── Testo descrittivo dentro la card ── */
+.card p {
+
+  /*rem: font-size del tag html (se non lo modifichi 16)*0.85 in questo caso */
+  font-size: 0.85rem;
+  color: #2d553b;
+  line-height: 1.5; /*Altezza di ogni riga di testo = 1.5 volte la dimensione del font. Con font-size: 0.85rem*/
+  margin: 0; /* rimuove il margine predefinito dei paragrafi per un aspetto più pulito */
+}

@@ -1,0 +1,182 @@
+/* ── Colori ripresi dal resto del progetto ── */
+/* Verde scuro:  #3a5f45                        */
+/* Verde chiaro: #c8e6c0                        */
+/* Sfondo:       #f0f7f0                        */
+
+/* ── Shell: sidebar + contenuto affiancati ── */
+.ds-shell {
+  display: flex;
+  flex: 1; /* Riempe lo spazio lasciato libero in app-root */
+  font-family: Arial, sans-serif;
+}
+
+/* ══════════════════════════════════════════════
+   SIDEBAR
+   ══════════════════════════════════════════════ */
+.sidebar {
+  width: 240px;
+  background-color: #3a5f45;        /* verde scuro */
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  transition: width 0.3s ease;      /* animazione apertura/chiusura */
+  flex-shrink: 0;                   /* non si restringe mai */
+}
+
+/* Sidebar chiusa: diventa stretta, mostra solo icone */
+.sidebar.chiusa {
+  width: 64px;
+}
+
+/* ── Header sidebar: avatar + nome ── */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px 24px 20px;
+}
+
+.avatar {
+  font-size: 2rem;
+  background-color: #c8e6c0;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;                   /* non si rimpicciolisce */
+}
+
+.ds-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;                 /* nasconde il testo quando la sidebar si chiude */
+}
+
+.ds-nome {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.ds-ruolo {
+  font-size: 0.75rem;
+  color: #c8e6c0;
+  white-space: nowrap;
+}
+
+/* ── Divisore ── */
+.divisore {
+  border: none;
+  border-top: 1px solid rgba(200, 230, 192, 0.3);
+  margin: 0 16px 16px 16px;
+}
+
+/* ── Menu di navigazione ── */
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 12px;
+  flex: 1;                          /* occupa tutto lo spazio disponibile */
+}
+
+/* ── Singola voce di menu ── */
+.voce-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #c8e6c0;                   /* verde chiaro di default */
+  font-size: 0.92rem;
+  transition: background 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+
+.voce-menu:hover {
+  background-color: rgba(200, 230, 192, 0.15);
+  color: #ffffff;
+}
+
+/* Classe aggiunta da routerLinkActive quando la rotta è attiva */
+.voce-menu.attivo {
+  background-color: #c8e6c0;
+  color: #3a5f45;                   /* testo verde scuro su sfondo chiaro */
+  font-weight: bold;
+}
+
+.icona-menu {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.label-menu {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Footer sidebar: logout ── */
+.sidebar-footer {
+  padding: 0 12px;
+  margin-top: auto; /* Assicura che il footer della sidebar sia incollato in basso */
+}
+
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: none;
+  border: 1px solid rgba(200, 230, 192, 0.3);
+  color: #c8e6c0;
+  font-size: 0.92rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.btn-logout:hover {
+  background-color: rgba(229, 115, 115, 0.2);  /* rosso trasparente per pericolo */
+  color: #ef9a9a;
+  border-color: #ef9a9a;
+}
+
+/* ══════════════════════════════════════════════
+   CONTENUTO PRINCIPALE
+   ══════════════════════════════════════════════ */
+.contenuto-principale {
+  flex: 1;                          /* occupa tutto lo spazio rimanente */
+  background-color: #f0f7f0;
+  position: relative;
+  /* Rimossa min-height: 100vh per evitare che sfori */
+}
+
+/* ── Pulsante toggle sidebar ── */
+.btn-toggle {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 2px solid #c8e6c0;
+  color: #3a5f45;
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+  z-index: 10;
+}
+
+.btn-toggle:hover {
+  background-color: #c8e6c0;
+}

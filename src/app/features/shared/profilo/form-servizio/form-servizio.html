@@ -1,0 +1,78 @@
+<div class="form-page-container">
+  <div class="form-card">
+    
+    <!-- TITOLO DINAMICO -->
+    <h2 *ngIf="isModificaPrenotazione">✏️ Modifica Prenotazione #{{ prenotazioneEsistente?.codiceId }}</h2>
+    <h2 *ngIf="!isModificaPrenotazione && !isModifica">➕ Attiva un nuovo servizio</h2>
+    <h2 *ngIf="!isModificaPrenotazione && isModifica">✏️ Modifica il servizio</h2>
+    
+    <!-- DESCRIZIONE DINAMICA -->
+    <p *ngIf="isModificaPrenotazione" class="descrizione-info">
+      Come Dog Sitter, puoi proporre un cambio di orario, data o modificare il prezzo pattuito per questa prenotazione.
+    </p>
+    <p *ngIf="!isModificaPrenotazione" class="descrizione-info">
+      Seleziona la categoria, indica la durata prevista e il prezzo. Puoi offrire servizi multipli della stessa categoria purché abbiano durata diversa.
+    </p>
+
+    <!-- FORM PER PRENOTAZIONE -->
+    <ng-container *ngIf="isModificaPrenotazione">
+      <div class="campo-form">
+        <label>Data</label>
+        <input type="date" [(ngModel)]="dataSvolgimento" class="input-attivo" required />
+      </div>
+
+      <div class="campo-form">
+        <label>Ora</label>
+        <input type="time" [(ngModel)]="oraSvolgimento" class="input-attivo" required />
+      </div>
+
+      <div class="campo-form">
+        <label>Prezzo Pattuito (€)</label>
+        <input type="number" [(ngModel)]="prezzoPattuito" class="input-numerico" placeholder="Es. 20" min="0" step="0.01" required />
+      </div>
+    </ng-container>
+
+    <!-- FORM PER SERVIZIO OFFERTO -->
+    <ng-container *ngIf="!isModificaPrenotazione">
+      <div class="campo-form">
+        <label>Seleziona Categoria</label>
+        <select [(ngModel)]="categoriaSelezionata" class="select-tendina">
+          <option value="" disabled selected>-- Scegli una categoria disponibile --</option>
+          <option *ngFor="let tipo of tipologieGlobaliDB" [value]="tipo">
+            🎯 {{ tipo }}
+          </option>
+        </select>
+      </div>
+
+      <div class="campo-form">
+        <label>Prezzo Listino (€)</label>
+        <input type="number" [(ngModel)]="prezzoListino" class="input-numerico" placeholder="Es. 20" min="0" step="0.01" />
+      </div>
+
+      <div class="campo-form">
+        <label>Durata del Servizio (in minuti)</label>
+        <input type="number" [(ngModel)]="durata" class="input-numerico" placeholder="Es. 45" min="1" />
+      </div>
+
+      <p *ngIf="tipologieGlobaliDB.length === 0" class="alert-info">
+        ⏳ Connessione al database delle categorie in corso...
+      </p>
+    </ng-container>
+
+    <!--Questa classe serve unicamente per scopi di stile (CSS). Di solito si usa per mettere i due bottoni affiancati (magari usando display: flex; gap: 10px;) 
+    e distanziarli bene dal resto del modulo.-->
+    <div class="gruppo-pulsanti">
+      <!--[disabled]="...": Questa è una Property Binding. Permette di disabilitare il bottone 
+      (diventa grigio e non cliccabile) se la condizione tra virgolette è vera.-->
+      <button type="button" class="btn-conferma" (click)="salva()" 
+              [disabled]="(!isModificaPrenotazione && (!categoriaSelezionata || !durata || !prezzoListino)) || (isModificaPrenotazione && (!dataSvolgimento || !oraSvolgimento || !prezzoPattuito))">
+        <!--Controlla la variabile booleana isModifica (che abbiamo impostato nel file .ts).
+            Se isModifica è true (stiamo modificando un servizio esistente), stampa a schermo la stringa 'Salva Modifiche'.
+            Se isModifica è false (stiamo creando un servizio da zero), stampa a schermo la stringa 'Attiva Servizio'.-->
+        {{ isModifica || isModificaPrenotazione ? 'Salva Modifiche' : 'Attiva Servizio' }}
+      </button>
+      <button type="button" class="btn-annulla" (click)="annulla()">Annulla</button>
+    </div>
+
+  </div>
+</div>

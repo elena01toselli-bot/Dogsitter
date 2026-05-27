@@ -1,0 +1,163 @@
+<div class="reg-campo-shell">
+
+  <!-- Header -->
+  <div class="reg-header">
+    <button class="btn-back" (click)="annulla()">← Torna alla lista</button>
+    <h1>{{ isModifica ? 'Modifica campo' : 'Nuovo campo di addestramento' }}</h1>
+  </div>
+
+  <!-- Caricamento -->
+  <div class="loading-state" *ngIf="caricamento">Caricamento dati...</div>
+
+  <!-- Form principale -->
+  <div class="reg-body" *ngIf="!caricamento">
+
+    <!-- Feedback -->
+    <div class="toast-success" *ngIf="salvato">✅ Campo salvato con successo!</div>
+    <div class="errore-msg"    *ngIf="errore">⚠️ {{ errore }}</div>
+
+    <!-- ── Sezione dati campo ── -->
+    <section class="sezione-card">
+      <h2 class="sezione-titolo">📋 Dati del campo</h2>
+
+      <div class="form-grid">
+
+        <div class="form-group full">
+          <label for="nome">Nome campo *</label>
+          <input
+            id="nome"
+            type="text"
+            [(ngModel)]="campo.nome"
+            [disabled]="isModifica"
+            placeholder="Es. Scuola Canina Milano"
+            maxlength="100" />
+          <small *ngIf="isModifica" class="hint">Il nome non può essere modificato (chiave primaria).</small>
+        </div>
+
+        <div class="form-group">
+          <label for="via">Via / Piazza *</label>
+          <input id="via" type="text" [(ngModel)]="campo.via" placeholder="Es. Via Garibaldi" />
+        </div>
+
+        <div class="form-group small">
+          <label for="nCivico">N° civico</label>
+          <input id="nCivico" type="text" [(ngModel)]="campo.nCivico" placeholder="Es. 12" maxlength="10" />
+        </div>
+
+        <div class="form-group small">
+          <label for="cap">CAP *</label>
+          <input id="cap" type="text" [(ngModel)]="campo.cap" placeholder="Es. 20100" maxlength="5" />
+        </div>
+
+        <div class="form-group">
+          <label for="provincia">Provincia *</label>
+          <input id="provincia" type="text" [(ngModel)]="campo.provincia" placeholder="Es. MI" maxlength="2" />
+        </div>
+
+        <div class="form-group">
+          <label for="nTel">Telefono</label>
+          <input id="nTel" type="tel" [(ngModel)]="campo.nTel" placeholder="Es. 02 1234567" />
+        </div>
+
+        <div class="form-group">
+          <label for="orarioApertura">Orario di apertura</label>
+          <input id="orarioApertura" type="text" [(ngModel)]="campo.orarioApertura" placeholder="Es. 08:00 – 19:00" />
+        </div>
+
+      </div>
+
+      <!-- Bottoni salvataggio campo -->
+      <div class="form-azioni">
+        <button class="btn-annulla" (click)="annulla()">Annulla</button>
+        <button class="btn-salva" (click)="salva()">
+          {{ isModifica ? 'Salva modifiche' : 'Crea campo' }}
+        </button>
+      </div>
+    </section>
+
+    <!-- ── Sezione lezioni (solo in modifica, campo già esistente) ── -->
+    <section class="sezione-card" *ngIf="isModifica">
+      <div class="sezione-header">
+        <h2 class="sezione-titolo">🎓 Lezioni associate</h2>
+        <button class="btn-nuova-lezione" (click)="apriFormLezione()">+ Nuova lezione</button>
+      </div>
+
+      <div class="empty-state" *ngIf="lezioni.length === 0">
+        Nessuna lezione ancora associata a questo campo.
+      </div>
+
+      <div class="lezioni-lista">
+        <div class="lezione-row" *ngFor="let l of lezioni; let i = index">
+          <div class="lezione-info">
+            <span class="lezione-tipo">{{ l.tipologia }}</span>
+            <span class="lezione-data">📅 {{ l.data }} alle {{ l.ora }}</span>
+            <span class="lezione-dettaglio">👥 max {{ l.maxPartecipanti }} | 💶 € {{ l.costo }}</span>
+          </div>
+          <div class="lezione-azioni">
+            <button class="btn-edit" (click)="apriFormLezione(i)">✏️</button>
+            <button class="btn-del"  (click)="eliminaLezione(i)">🗑️</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /reg-body -->
+
+</div><!-- /reg-campo-shell -->
+
+<!-- ══ OVERLAY form lezione ══ -->
+<div class="overlay" *ngIf="mostraFormLezione" (click)="chiudiFormLezione()">
+  <div class="lezione-panel" (click)="$event.stopPropagation()">
+
+    <div class="panel-header">
+      <h3>{{ lezioneEditIndex !== null ? 'Modifica lezione' : 'Nuova lezione' }}</h3>
+      <button class="btn-chiudi" (click)="chiudiFormLezione()">✕</button>
+    </div>
+
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Data *</label>
+        <input type="date" [(ngModel)]="nuovaLezione.data" />
+      </div>
+
+      <div class="form-group">
+        <label>Ora *</label>
+        <input type="time" [(ngModel)]="nuovaLezione.ora" />
+      </div>
+
+      <div class="form-group">
+        <label>Tipologia *</label>
+        <select [(ngModel)]="nuovaLezione.tipologia">
+          <option value="">Seleziona</option>
+          <option value="Base">Base</option>
+          <option value="Avanzato">Avanzato</option>
+          <option value="Agility">Agility</option>
+          <option value="Socializzazione">Socializzazione</option>
+          <option value="Cuccioli">Cuccioli</option>
+        </select>
+      </div>
+
+      <div class="form-group small">
+        <label>Costo (€) *</label>
+        <input type="number" [(ngModel)]="nuovaLezione.costo" min="0" step="0.5" />
+      </div>
+
+      <div class="form-group small">
+        <label>Max partecipanti</label>
+        <input type="number" [(ngModel)]="nuovaLezione.maxPartecipanti" min="1" step="1" />
+      </div>
+
+    </div>
+
+    <div class="panel-azioni">
+      <button class="btn-annulla" (click)="chiudiFormLezione()">Annulla</button>
+      <button class="btn-salva"
+              [disabled]="!nuovaLezione.data || !nuovaLezione.ora || !nuovaLezione.tipologia"
+              (click)="salvaLezione()">
+        Salva
+      </button>
+    </div>
+
+  </div>
+</div>
