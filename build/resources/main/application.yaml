@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: dogsitting-backend
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/Dogsitter
+    username: alberto_user
+    password: WebappPassword1.
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    
+  jpa:
+      hibernate:
+        ddl-auto: validate
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      open-in-view: false
